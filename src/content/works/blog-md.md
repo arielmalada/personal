@@ -27,4 +27,4 @@ publishDate: 2025-09-25
 - **Version Control**: Git
 - **Package Manager**: CDN (no npm dependencies)
 
-#### *AI Assisted Works
+#### \*AI Assisted Works
