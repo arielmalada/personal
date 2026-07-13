@@ -73,6 +73,27 @@ docker run --rm -p 8080:8080 arielmalada-personal-site
 
 The image serves the static site at `http://localhost:8080`. It does not include TLS or a public deployment configuration; a reverse proxy or Cloudflare Tunnel can be added at the host level later.
 
+## Docker Compose
+
+The Compose configuration runs the published GHCR image as a read-only, non-root service. It publishes port `8080` on the host for a reverse proxy, Cloudflare Tunnel, or access from the local network.
+
+```sh
+docker compose pull
+docker compose up -d
+docker compose ps
+```
+
+Update and restart the site with:
+
+```sh
+docker compose pull
+docker compose up -d --remove-orphans
+```
+
+Copy `.env.example` to `.env` only when you need to override the image tag, bind address, or host port. Set `SITE_BIND=127.0.0.1` to restrict access to services running directly on the same host.
+
+On TrueNAS SCALE, use this file with **Apps > Install via YAML**, or configure a Custom App with image `ghcr.io/arielmalada/personal:edge`, container port `8080`, and an available host port. The GHCR package must be public unless registry credentials are configured in TrueNAS.
+
 ## Automation
 
 `.github/workflows/ci.yml` validates formatting, Astro types, content schemas, and the production build.
