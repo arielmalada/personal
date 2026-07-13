@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="Ariel Malada's experience, education, skills, and approach to building digital products."
+>
+  <section class="page-head section">
+    <p class="eyebrow">About</p>
+    <h1>Engineering informed by user experience.</h1>
+    <p class="lead">
+      My background moves between frontend engineering, product thinking, and
+      human-technology interaction. I care about how a system works and how it
+      feels to use.
+    </p>
+  </section>
+
+  <section class="section prose-grid">
+    <div>
+      <p class="eyebrow">Profile</p>
+      <h2>Curious across disciplines.</h2>
+    </div>
+    <div class="prose-stack">
+      <p>
+        I have worked primarily with JavaScript and React, while exploring
+        mobile applications, robotics, game development, data analysis, and
+        augmented reality along the way.
+      </p>
+      <p>
+        I studied Human-Technology Interaction at Tampere University after
+        completing a Computer Science degree at IPB University. Outside work, I
+        enjoy cooperative games, card games, and occasionally baking something
+        worth sharing.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Professional focus">
+    <div class="about-ledger">
+      <article>
+        <span>01</span>
+        <h3>Frontend</h3>
+        <p>
+          Product interfaces, component systems, performance, and maintainable
+          application architecture.
+        </p>
+      </article>
+      <article>
+        <span>02</span>
+        <h3>User experience</h3>
+        <p>
+          Research-aware implementation that connects technical decisions to
+          real user needs.
+        </p>
+      </article>
+      <article>
+        <span>03</span>
+        <h3>Learning</h3>
+        <p>
+          Prototypes and side projects used to understand unfamiliar tools,
+          domains, and constraints.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section resume-section" aria-labelledby="experience-title">
+    <div class="section-heading resume-heading">
+      <p class="eyebrow">Experience</p>
+      <h2 id="experience-title">A history of building products.</h2>
+    </div>
+    <div class="timeline">
+      <article>
+        <div class="timeline-meta">
+          <p>2021 - 2022</p><p>Frontend Engineer</p>
+        </div>
+        <div>
+          <h3><a href="https://pintap.id">Pintap</a></h3><p>
+            Built research and concierge products with React, SolidJS, and
+            Gatsby. Work included branching surveys, response tools, calendars,
+            rich-text notes, chart annotation, reusable component packages,
+            onboarding, and documentation.
+          </p>
+        </div>
+      </article>
+      <article>
+        <div class="timeline-meta">
+          <p>2019 - 2021</p><p>Software Engineer</p>
+        </div>
+        <div>
+          <h3><a href="https://hukumonline.com">Hukumonline</a></h3><p>
+            Worked on a React-based platform for premium articles, events,
+            learning, and legal search. Also improved Express API endpoints,
+            site performance, SEO, and maintained a legacy PHP application.
+          </p>
+        </div>
+      </article>
+      <article>
+        <div class="timeline-meta">
+          <p>2018 - 2019</p><p>Mobile Developer</p>
+        </div>
+        <div>
+          <h3>Makara VAS</h3><p>
+            Developed a Flutter application used to survey vessel conditions and
+            learned how to translate client needs into an application
+            specification.
+          </p>
+        </div>
+      </article>
+      <article>
+        <div class="timeline-meta"><p>2018</p><p>Web Developer Intern</p></div>
+        <div>
+          <h3>Jakarta Industrial Estate Pulogadung</h3><p>
+            Developed a financial management system with CodeIgniter and gained
+            practical experience with agile delivery and client progress
+            reviews.
+          </p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section resume-grid" aria-label="Education and skills">
+    <div>
+      <p class="eyebrow">Education</p>
+      <h2>Technology and people.</h2>
+      <div class="compact-list">
+        <article>
+          <h3>Tampere University</h3><p>
+            Human-Technology Interaction, master's studies
+          </p>
+        </article>
+        <article>
+          <h3>IPB University</h3><p>Computer Science, bachelor's degree</p>
+        </article>
+      </div>
+    </div>
+    <div>
+      <p class="eyebrow">Skills</p>
+      <div class="skill-list">
+        <article>
+          <h3>Languages</h3><p>JavaScript, TypeScript, CSS, SCSS, PHP, Dart</p>
+        </article>
+        <article>
+          <h3>Frameworks</h3><p>
+            React, Next.js, SolidJS, Node.js, Express, Flutter
+          </p>
+        </article>
+        <article>
+          <h3>Product</h3><p>
+            Figma, accessibility, performance, SEO, user research
+          </p>
+        </article>
+        <article>
+          <h3>Tools and data</h3><p>
+            Git, Jest, REST APIs, MySQL, MariaDB, MongoDB, Lighthouse
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section prose-grid about-closing">
+    <div>
+      <p class="eyebrow">Recognition</p><h2>Experiments beyond the day job.</h2>
+    </div>
+    <div class="compact-list">
+      <article>
+        <h3>Inclusive Cities Hackathon</h3><p>
+          Winner, 2022. Contributed research, interaction design, WebXR
+          development, 3D work, and video production.
+        </p>
+      </article>
+      <article>
+        <h3>Competitions</h3><p>
+          Participated in Digital Construction Hackathon PTPP, KRPAI Regional 2,
+          National Bridge Competition, and competitive Shadowverse events.
+        </p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

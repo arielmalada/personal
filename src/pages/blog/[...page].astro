@@ -1,0 +1,109 @@
+---
+import { render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Pagination from '../../components/Pagination.astro';
+import { withBase } from '../../lib/url';
+import { getBlogPosts } from '../../lib/content';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getBlogPosts();
+  const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort(
+    (a, b) => a.localeCompare(b),
+  );
+  return paginate(posts, { pageSize: 10, props: { allTags } });
+}) satisfies GetStaticPaths;
+
+const { page, allTags } = Astro.props;
+const posts = page.data;
+
+const readingTimes = new Map(
+  await Promise.all(
+    posts.map(async (post) => {
+      const { remarkPluginFrontmatter } = await render(post);
+      return [post.id, remarkPluginFrontmatter.minutesRead as string] as const;
+    }),
+  ),
+);
+
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat('en', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(date);
+
+const pageTitle =
+  page.currentPage === 1 ? 'Blog' : `Blog · Page ${page.currentPage}`;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description="Writing by Ariel Malada about frontend engineering, user experience, and learning."
+>
+  <section class="page-head section">
+    <p class="eyebrow">Blog</p>
+    <h1>Notes from engineering and design.</h1>
+    <p class="lead">
+      Longer reflections on building interfaces, understanding users, and
+      learning unfamiliar systems by making things with them.
+    </p>
+  </section>
+
+  <section class="section content-index" aria-label="Blog posts">
+    <div class="index-sidebar">
+      <p class="eyebrow">Tags</p>
+      {
+        allTags.length > 0 ? (
+          <nav class="tag-cloud" aria-label="Blog tags">
+            {allTags.map((tag) => (
+              <a href={withBase(`/blog/tags/${encodeURIComponent(tag)}/`)}>
+                {tag}
+              </a>
+            ))}
+          </nav>
+        ) : (
+          <p class="muted-copy">Tags will appear with the first post.</p>
+        )
+      }
+    </div>
+
+    <div>
+      {
+        posts.length > 0 ? (
+          <div class="entry-list">
+            {posts.map((post) => (
+              <article class="entry-card">
+                <div class="entry-meta">
+                  <time datetime={post.data.publishDate.toISOString()}>
+                    {formatDate(post.data.publishDate)}
+                  </time>
+                  <span>{readingTimes.get(post.id)}</span>
+                  <span>{post.data.tags.join(' / ')}</span>
+                </div>
+                <h2>
+                  <a href={withBase(`/blog/${post.id}/`)}>{post.data.title}</a>
+                </h2>
+                <p>{post.data.description}</p>
+                {post.data.draft && import.meta.env.DEV && (
+                  <p class="draft-label">Draft</p>
+                )}
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div class="empty-state">
+            <>
+              <h2>Writing starts here.</h2>
+              <p>
+                No posts are published yet. I am preparing the first notes for
+                this space.
+              </p>
+            </>
+          </div>
+        )
+      }
+      {posts.length > 0 && <Pagination page={page} />}
+    </div>
+  </section>
+</BaseLayout>

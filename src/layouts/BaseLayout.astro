@@ -1,0 +1,185 @@
+---
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource/public-sans/400.css';
+import '@fontsource/public-sans/500.css';
+import '@fontsource/public-sans/600.css';
+import '@fontsource/public-sans/700.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import '../styles/global.css';
+import { withBase } from '../lib/url';
+import { NAV_ITEMS, SITE, SOCIAL_LINKS } from '../consts';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogType?: 'website' | 'article';
+  image?: string;
+  structuredData?: Record<string, unknown>;
+  noIndex?: boolean;
+  excludeFromSearch?: boolean;
+}
+
+const siteName = SITE.title;
+
+const {
+  title = siteName,
+  description = SITE.description,
+  ogType = 'website',
+  image,
+  structuredData,
+  noIndex = false,
+  excludeFromSearch = false,
+} = Astro.props;
+
+// `Astro.site` comes from `site` in astro.config.mjs; fall back to the
+// request URL during dev so canonical/OG links still resolve.
+const siteBase = Astro.site ?? new URL(Astro.url.origin);
+const canonicalURL = new URL(Astro.url.pathname, siteBase);
+const imageURL = image
+  ? new URL(image, siteBase)
+  : new URL(withBase(SITE.ogImage), siteBase);
+const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
+
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => {
+  const full = withBase(href);
+  return href === '/' ? currentPath === full : currentPath.startsWith(full);
+};
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.title,
+  url: Astro.site?.href ?? Astro.url.origin,
+  email: `mailto:${SITE.email}`,
+  homeLocation: { '@type': 'Place', name: SITE.location },
+  sameAs: SOCIAL_LINKS.filter(({ href }) => href.startsWith('https://')).map(
+    ({ href }) => href,
+  ),
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.title} />
+    {noIndex && <meta name="robots" content="noindex, follow" />}
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={siteName}
+      href={withBase('/rss.xml')}
+    />
+    <title>{fullTitle}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    {imageURL && <meta property="og:image" content={imageURL} />}
+
+    <!-- Twitter -->
+    <meta
+      name="twitter:card"
+      content={imageURL ? 'summary_large_image' : 'summary'}
+    />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    {imageURL && <meta name="twitter:image" content={imageURL} />}
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(personSchema)}
+    />
+    {
+      structuredData && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(structuredData)}
+        />
+      )
+    }
+    <script is:inline>
+      const storedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)',
+      ).matches;
+      document.documentElement.dataset.theme =
+        storedTheme || (prefersDark ? 'dark' : 'light');
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href={withBase('/')} aria-label={`${siteName} home`}>
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>{siteName}</span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        {
+          NAV_ITEMS.map((item) => (
+            <a
+              href={withBase(item.href)}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label="Toggle color theme"
+        data-theme-toggle
+      >
+        <span aria-hidden="true"></span>
+      </button>
+    </header>
+
+    <main
+      id="main-content"
+      data-pagefind-body={excludeFromSearch ? undefined : true}
+      data-pagefind-ignore={excludeFromSearch ? true : undefined}
+    >
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; {new Date().getFullYear()} {SITE.title}</p>
+      <nav class="footer-links" aria-label="Social links">
+        {SOCIAL_LINKS.map((item) => <a href={item.href}>{item.label}</a>)}
+      </nav>
+    </footer>
+
+    <script>
+      const toggle = document.querySelector('[data-theme-toggle]');
+      const updateLabel = () => {
+        const current = document.documentElement.dataset.theme;
+        toggle?.setAttribute(
+          'aria-label',
+          `Use ${current === 'dark' ? 'light' : 'dark'} theme`,
+        );
+      };
+
+      updateLabel();
+      toggle?.addEventListener('click', () => {
+        const current = document.documentElement.dataset.theme;
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem('theme', next);
+        updateLabel();
+      });
+    </script>
+  </body>
+</html>

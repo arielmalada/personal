@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/url';
+
+const bundlePath = withBase('/pagefind/');
+---
+
+<BaseLayout
+  title="Search"
+  description="Search Ariel Malada's projects and writing."
+  noIndex
+  excludeFromSearch
+>
+  <section class="page-head section">
+    <p class="eyebrow">Search</p>
+    <h1>Find projects and writing.</h1>
+    <p class="lead">
+      Search published case studies and notes. The index is generated with the
+      site and does not send queries to an external service.
+    </p>
+  </section>
+
+  <section class="section search-section" aria-label="Site search">
+    <link rel="stylesheet" href={`${bundlePath}pagefind-component-ui.css`} />
+    <script
+      is:inline
+      type="module"
+      src={`${bundlePath}pagefind-component-ui.js`}></script>
+    <div id="search">
+      <pagefind-config bundle-path={bundlePath}></pagefind-config>
+      <pagefind-input placeholder="Search projects and writing" autofocus
+      ></pagefind-input>
+      <pagefind-summary default-message="Start typing to search the site."
+      ></pagefind-summary>
+      <pagefind-results></pagefind-results>
+      <pagefind-keyboard-hints></pagefind-keyboard-hints>
+      <p class="search-fallback">
+        The search index is generated at build time. Run <code
+          >npm run build</code
+        > and preview the site to try it — it is not available on the dev server.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

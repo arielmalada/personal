@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://arielmalada.id/sitemap-index.xml

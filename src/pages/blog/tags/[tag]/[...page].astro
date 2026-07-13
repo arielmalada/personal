@@ -1,0 +1,103 @@
+---
+import { render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Pagination from '../../../../components/Pagination.astro';
+import { withBase } from '../../../../lib/url';
+import { getBlogPosts } from '../../../../lib/content';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getBlogPosts();
+  const allTags = [...new Set(posts.flatMap((post) => post.data.tags))];
+  return allTags.flatMap((tag) => {
+    const taggedPosts = posts
+      .filter((post) => post.data.tags.includes(tag))
+      .sort(
+        (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+      );
+    const otherTags = allTags
+      .filter((item) => item !== tag)
+      .sort((a, b) => a.localeCompare(b));
+    return paginate(taggedPosts, {
+      params: { tag },
+      pageSize: 10,
+      props: { otherTags },
+    });
+  });
+}) satisfies GetStaticPaths;
+
+const { tag } = Astro.params;
+const { page, otherTags } = Astro.props;
+const taggedPosts = page.data;
+
+const readingTimes = new Map(
+  await Promise.all(
+    taggedPosts.map(async (post) => {
+      const { remarkPluginFrontmatter } = await render(post);
+      return [post.id, remarkPluginFrontmatter.minutesRead as string] as const;
+    }),
+  ),
+);
+
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat('en', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(date);
+
+const pageTitle =
+  page.currentPage === 1
+    ? `Posts tagged “${tag}”`
+    : `Posts tagged “${tag}” · Page ${page.currentPage}`;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={`Writing by Ariel Malada tagged ${tag}.`}
+>
+  <section class="page-head section">
+    <p class="eyebrow">Tag</p>
+    <h1>{tag}</h1>
+    <p class="lead">Notes collected under the {tag} tag.</p>
+  </section>
+
+  <section class="section content-index" aria-label={`${tag} posts`}>
+    <div class="index-sidebar">
+      <p class="eyebrow">More tags</p>
+      <nav class="tag-cloud" aria-label="Other blog tags">
+        <a href={withBase('/blog/')}>All posts</a>
+        {
+          otherTags.map((item) => (
+            <a href={withBase(`/blog/tags/${encodeURIComponent(item)}/`)}>
+              {item}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+
+    <div>
+      <div class="entry-list">
+        {
+          taggedPosts.map((post) => (
+            <article class="entry-card">
+              <div class="entry-meta">
+                <time datetime={post.data.publishDate.toISOString()}>
+                  {formatDate(post.data.publishDate)}
+                </time>
+                <span>{readingTimes.get(post.id)}</span>
+                <span>{post.data.tags.join(' / ')}</span>
+              </div>
+              <h2>
+                <a href={withBase(`/blog/${post.id}/`)}>{post.data.title}</a>
+              </h2>
+              <p>{post.data.description}</p>
+            </article>
+          ))
+        }
+      </div>
+      <Pagination page={page} />
+    </div>
+  </section>
+</BaseLayout>

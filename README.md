@@ -1,0 +1,84 @@
+# arielmalada.id
+
+Personal portfolio and blog for [Ariel Malada](https://arielmalada.id), built with Astro 7 and plain CSS. The site is statically generated and packaged as an unprivileged Nginx container for portable self-hosting.
+
+The design is based on the MIT-licensed [Astro Keel](https://github.com/kpab/astro-keel) theme.
+
+## Requirements
+
+- Node.js 22.12 or newer; Node.js 24 is used in CI and Docker
+- npm
+- Docker, only when building the production image
+
+## Development
+
+```sh
+npm install
+npm run dev
+```
+
+Draft work and blog entries are visible in development. Production builds exclude every entry with `draft: true`.
+
+## Quality checks
+
+```sh
+npm run format:check
+npm run check
+npm run build
+```
+
+`npm run build` also generates the Pagefind search index in `dist/pagefind`.
+
+## Content
+
+Portfolio entries live in `src/content/works/`. Blog posts live in `src/content/blog/`. Both accept Markdown and MDX.
+
+Work frontmatter:
+
+```yaml
+---
+title: Project name
+description: A concise project summary.
+tech: ['Astro', 'TypeScript']
+link: https://example.com
+repo: https://github.com/example/project
+role: Frontend developer
+order: 1
+publishDate: 2026-01-01
+draft: true
+---
+```
+
+Blog frontmatter:
+
+```yaml
+---
+title: Post title
+description: A concise summary for listings and search.
+publishDate: 2026-01-01
+updatedDate: 2026-01-02
+tags: ['astro', 'frontend']
+draft: true
+---
+```
+
+Set `draft: false` when an entry is ready for the production build.
+
+## Container
+
+```sh
+docker build -t arielmalada-personal-site .
+docker run --rm -p 8080:8080 arielmalada-personal-site
+```
+
+The image serves the static site at `http://localhost:8080`. It does not include TLS or a public deployment configuration; a reverse proxy or Cloudflare Tunnel can be added at the host level later.
+
+## Automation
+
+`.github/workflows/ci.yml` validates formatting, Astro types, content schemas, and the production build.
+
+`.github/workflows/container.yml` validates multi-architecture images on pull requests and publishes `linux/amd64` and `linux/arm64` images to GitHub Container Registry from `main`, version tags, and manual runs.
+
+## License
+
+The project retains the Astro Keel MIT license in [`LICENSE`](./LICENSE).

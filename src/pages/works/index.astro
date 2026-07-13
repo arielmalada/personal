@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getWorkEntries } from '../../lib/content';
+import { withBase } from '../../lib/url';
+
+const works = await getWorkEntries();
+---
+
+<BaseLayout
+  title="Works"
+  description="Selected projects and case studies by Ariel Malada."
+>
+  <section class="page-head section">
+    <p class="eyebrow">Works</p>
+    <h1>Selected projects in context.</h1>
+    <p class="lead">
+      Product work, technical experiments, and research documented through the
+      problem, the contribution, and what came out of it.
+    </p>
+  </section>
+
+  <section class="section" aria-label="Selected works">
+    {
+      works.length > 0 ? (
+        <div class="work-list">
+          {works.map((work) => (
+            <article class="work-card">
+              <div class="entry-meta">
+                <span>{work.data.publishDate.getFullYear()}</span>
+                {work.data.draft && import.meta.env.DEV && (
+                  <span class="draft-label">Draft</span>
+                )}
+              </div>
+              <h2>
+                <a href={withBase(`/works/${work.id}/`)}>{work.data.title}</a>
+              </h2>
+              <div>
+                <p>{work.data.description}</p>
+                <p class="work-tech">{work.data.tech.join(' / ')}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <p>Case studies are being prepared for publication.</p>
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>
