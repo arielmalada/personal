@@ -45,6 +45,9 @@ const formatDate = (date: Date) =>
                     loading="lazy"
                   />
                   <span class="photo-card-meta">
+                    {photo.data.draft && import.meta.env.DEV && (
+                      <span class="draft-label">Draft</span>
+                    )}
                     <span class="photo-card-title">{photo.data.title}</span>
                     <span class="meta">
                       {formatDate(photo.data.publishDate)}
@@ -77,7 +80,7 @@ const formatDate = (date: Date) =>
             >
               <span aria-hidden="true" />
             </button>
-            <div class="lightbox-frame">
+            <div class="lightbox-frame" aria-live="polite">
               {photos.map((photo, index) => (
                 <figure class="lightbox-slide" data-slide hidden={index !== 0}>
                   <Image
