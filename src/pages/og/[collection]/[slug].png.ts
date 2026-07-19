@@ -7,7 +7,7 @@ import { SITE } from '../../../consts';
 import { getBlogPosts, getWorkEntries } from '../../../lib/content';
 
 // Build-time generated Open Graph images for every blog post and work entry,
-// rendered in the theme's light palette (see global.css tokens). The static
+// rendered in the site's Catppuccin Mocha palette. The static
 // `public/og.jpg` remains the site-wide fallback for all other pages.
 
 interface OgProps {
@@ -39,14 +39,12 @@ export const getStaticPaths = (async () => {
   ];
 }) satisfies GetStaticPaths;
 
-// Satori has no oklch() support, so these are hex equivalents of the
-// light-theme tokens in global.css.
 const COLOR = {
-  bg: '#faf8f3',
-  text: '#282622',
-  muted: '#716d65',
-  line: '#ddd7cb',
-  accent: '#a8492c',
+  bg: '#1e1e2e',
+  text: '#cdd6f4',
+  muted: '#a6adc8',
+  line: '#313244',
+  accent: '#cba6f7',
 };
 
 const require = createRequire(import.meta.url);

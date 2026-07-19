@@ -1,21 +1,46 @@
 :root {
-  color-scheme: light;
-  /* Change this one line to retune the theme accent. */
-  --color-accent: oklch(0.54 0.14 35);
-  --color-accent-hover: color-mix(in oklch, var(--color-accent), black 12%);
-  --color-accent-soft: color-mix(
-    in oklch,
+  color-scheme: dark;
+  --ctp-rosewater: #f5e0dc;
+  --ctp-flamingo: #f2cdcd;
+  --ctp-pink: #f5c2e7;
+  --ctp-mauve: #cba6f7;
+  --ctp-red: #f38ba8;
+  --ctp-maroon: #eba0ac;
+  --ctp-peach: #fab387;
+  --ctp-yellow: #f9e2af;
+  --ctp-green: #a6e3a1;
+  --ctp-teal: #94e2d5;
+  --ctp-sky: #89dceb;
+  --ctp-sapphire: #74c7ec;
+  --ctp-blue: #89b4fa;
+  --ctp-lavender: #b4befe;
+  --ctp-text: #cdd6f4;
+  --ctp-subtext-1: #bac2de;
+  --ctp-subtext-0: #a6adc8;
+  --ctp-overlay-2: #9399b2;
+  --ctp-overlay-1: #7f849c;
+  --ctp-overlay-0: #6c7086;
+  --ctp-surface-2: #585b70;
+  --ctp-surface-1: #45475a;
+  --ctp-surface-0: #313244;
+  --ctp-base: #1e1e2e;
+  --ctp-mantle: #181825;
+  --ctp-crust: #11111b;
+  --color-accent: var(--ctp-mauve);
+  --color-accent-hover: color-mix(
+    in srgb,
     var(--color-accent),
-    transparent 84%
+    var(--ctp-text) 14%
   );
-  --color-on-accent: oklch(0.99 0.003 100);
-  --color-bg: oklch(0.978 0.008 85);
-  --color-surface: oklch(0.95 0.011 85);
-  --color-text: oklch(0.26 0.012 70);
-  --color-muted: oklch(0.49 0.015 75);
-  --color-line: oklch(0.86 0.016 82);
-  --color-line-strong: oklch(0.7 0.022 72);
-  --color-soft: oklch(0.925 0.014 84);
+  --color-accent-soft: color-mix(in srgb, var(--color-accent), transparent 80%);
+  --color-on-accent: var(--ctp-crust);
+  --color-bg: var(--ctp-base);
+  --color-surface: var(--ctp-surface-0);
+  --color-text: var(--ctp-text);
+  --color-muted: var(--ctp-subtext-0);
+  --color-line: var(--ctp-surface-0);
+  --color-line-strong: var(--ctp-surface-2);
+  --color-soft: var(--ctp-mantle);
   --font-display: 'Fraunces Variable', Georgia, serif;
   --font-body: 'Public Sans', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
@@ -25,65 +50,6 @@
   --baseline: 1.5rem;
   --hairline: 1px solid var(--color-line);
   --focus-ring: 0 0 0 3px var(--color-accent-soft);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --color-accent: oklch(0.72 0.13 42);
-    --color-accent-hover: color-mix(in oklch, var(--color-accent), white 10%);
-    --color-accent-soft: color-mix(
-      in oklch,
-      var(--color-accent),
-      transparent 78%
-    );
-    --color-on-accent: oklch(0.2 0.012 65);
-    --color-bg: oklch(0.19 0.01 65);
-    --color-surface: oklch(0.23 0.012 65);
-    --color-text: oklch(0.92 0.01 85);
-    --color-muted: oklch(0.69 0.015 78);
-    --color-line: oklch(0.34 0.016 68);
-    --color-line-strong: oklch(0.45 0.02 68);
-    --color-soft: oklch(0.27 0.014 66);
-  }
-}
-
-:root[data-theme='light'] {
-  color-scheme: light;
-  --color-accent: oklch(0.54 0.14 35);
-  --color-accent-hover: color-mix(in oklch, var(--color-accent), black 12%);
-  --color-accent-soft: color-mix(
-    in oklch,
-    var(--color-accent),
-    transparent 84%
-  );
-  --color-on-accent: oklch(0.99 0.003 100);
-  --color-bg: oklch(0.978 0.008 85);
-  --color-surface: oklch(0.95 0.011 85);
-  --color-text: oklch(0.26 0.012 70);
-  --color-muted: oklch(0.49 0.015 75);
-  --color-line: oklch(0.86 0.016 82);
-  --color-line-strong: oklch(0.7 0.022 72);
-  --color-soft: oklch(0.925 0.014 84);
-}
-
-:root[data-theme='dark'] {
-  color-scheme: dark;
-  --color-accent: oklch(0.72 0.13 42);
-  --color-accent-hover: color-mix(in oklch, var(--color-accent), white 10%);
-  --color-accent-soft: color-mix(
-    in oklch,
-    var(--color-accent),
-    transparent 78%
-  );
-  --color-on-accent: oklch(0.2 0.012 65);
-  --color-bg: oklch(0.19 0.01 65);
-  --color-surface: oklch(0.23 0.012 65);
-  --color-text: oklch(0.92 0.01 85);
-  --color-muted: oklch(0.69 0.015 78);
-  --color-line: oklch(0.34 0.016 68);
-  --color-line-strong: oklch(0.45 0.02 68);
-  --color-soft: oklch(0.27 0.014 66);
 }
 
 * {
@@ -175,7 +141,7 @@ a:not(.brand, .button):hover {
   top: 0;
   z-index: 100;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   align-items: center;
   gap: 1rem;
   padding-block: calc(var(--baseline) * 0.85);
@@ -201,7 +167,7 @@ a:not(.brand, .button):hover {
 
 .site-nav {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   gap: clamp(0.75rem, 2vw, 1.6rem);
 }
 
@@ -215,34 +181,6 @@ a:not(.brand, .button):hover {
 .site-nav a[aria-current='page'] {
   color: var(--color-text);
   background-size: 100% 1px;
-}
-
-.theme-toggle {
-  display: grid;
-  width: 2.35rem;
-  height: 2.35rem;
-  place-items: center;
-  border: var(--hairline);
-  border-radius: 50%;
-  background: var(--color-bg);
-  color: var(--color-text);
-  cursor: pointer;
-  transition:
-    border-color 180ms ease,
-    color 180ms ease;
-}
-
-.theme-toggle:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-}
-
-.theme-toggle span {
-  width: 0.88rem;
-  height: 0.88rem;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
 }
 
 .hero {
@@ -645,8 +583,7 @@ pre code {
   margin: 0;
 }
 
-/* Lightbox: full-viewport dialog on a dark scrim, independent of the site
-   theme so photographs always read against the same neutral dark. */
+/* Lightbox: full-viewport dialog on the palette's darkest scrim. */
 .lightbox {
   width: 100%;
   max-width: 100%;
@@ -655,13 +592,13 @@ pre code {
   padding: clamp(1rem, 3vw, 2.5rem);
   border: 0;
   background: transparent;
-  --lightbox-text: oklch(0.93 0.01 85);
-  --lightbox-muted: oklch(0.72 0.015 78);
-  --lightbox-line: oklch(1 0 0 / 22%);
+  --lightbox-text: var(--ctp-text);
+  --lightbox-muted: var(--ctp-subtext-0);
+  --lightbox-line: var(--ctp-surface-2);
 }
 
 .lightbox::backdrop {
-  background: oklch(0.15 0.012 65 / 94%);
+  background: color-mix(in srgb, var(--ctp-crust), transparent 6%);
 }
 
 .lightbox[open] {
@@ -747,7 +684,7 @@ pre code {
   right: clamp(0.75rem, 2vw, 1.5rem);
 }
 
-/* CSS-drawn icons, same approach as the theme toggle. */
+/* CSS-drawn lightbox icons. */
 .lightbox-close span {
   width: 0.95rem;
   height: 0.95rem;
@@ -882,22 +819,13 @@ pre code {
   margin-block: calc(var(--baseline) * 1.5);
 }
 
-/* Shiki dual themes: github-light by default, github-dark under data-theme. */
-.astro-code,
-.astro-code span {
-  color: var(--shiki-light);
-  background-color: transparent;
-  font-style: var(--shiki-light-font-style);
-  font-weight: var(--shiki-light-font-weight);
-  text-decoration: var(--shiki-light-text-decoration);
+/* Shiki supplies Catppuccin Mocha token colors. */
+.astro-code {
+  background-color: var(--color-soft) !important;
 }
 
-:root[data-theme='dark'] .astro-code,
-:root[data-theme='dark'] .astro-code span {
-  color: var(--shiki-dark);
-  font-style: var(--shiki-dark-font-style);
-  font-weight: var(--shiki-dark-font-weight);
-  text-decoration: var(--shiki-dark-text-decoration);
+.astro-code span {
+  background-color: transparent !important;
 }
 
 .section-heading {
@@ -1182,17 +1110,11 @@ pre code {
 
 @media (max-width: 760px) {
   .site-header {
-    grid-template-columns: 1fr auto;
-  }
-
-  .theme-toggle {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
+    grid-template-columns: 1fr;
   }
 
   .site-nav {
-    grid-column: 1 / -1;
+    grid-column: 1;
     grid-row: 2;
     justify-content: flex-start;
     overflow-x: auto;

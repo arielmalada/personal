@@ -66,6 +66,7 @@ const personSchema = {
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="author" content={SITE.title} />
+    <meta name="theme-color" content="#1e1e2e" />
     {noIndex && <meta name="robots" content="noindex, follow" />}
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
@@ -109,14 +110,6 @@ const personSchema = {
         />
       )
     }
-    <script is:inline>
-      const storedTheme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia(
-        '(prefers-color-scheme: dark)',
-      ).matches;
-      document.documentElement.dataset.theme =
-        storedTheme || (prefersDark ? 'dark' : 'light');
-    </script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -137,14 +130,6 @@ const personSchema = {
           ))
         }
       </nav>
-      <button
-        class="theme-toggle"
-        type="button"
-        aria-label="Toggle color theme"
-        data-theme-toggle
-      >
-        <span aria-hidden="true"></span>
-      </button>
     </header>
 
     <main
@@ -161,25 +146,5 @@ const personSchema = {
         {SOCIAL_LINKS.map((item) => <a href={item.href}>{item.label}</a>)}
       </nav>
     </footer>
-
-    <script>
-      const toggle = document.querySelector('[data-theme-toggle]');
-      const updateLabel = () => {
-        const current = document.documentElement.dataset.theme;
-        toggle?.setAttribute(
-          'aria-label',
-          `Use ${current === 'dark' ? 'light' : 'dark'} theme`,
-        );
-      };
-
-      updateLabel();
-      toggle?.addEventListener('click', () => {
-        const current = document.documentElement.dataset.theme;
-        const next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.dataset.theme = next;
-        localStorage.setItem('theme', next);
-        updateLabel();
-      });
-    </script>
   </body>
 </html>
