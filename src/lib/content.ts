@@ -26,3 +26,18 @@ export async function getWorkEntries() {
     );
   });
 }
+
+export async function getPhotos() {
+  const photos = await getCollection(
+    'photos',
+    ({ data }) => includeDrafts || !data.draft,
+  );
+  return photos.sort((a, b) => {
+    const orderA = a.data.order ?? Number.MAX_SAFE_INTEGER;
+    const orderB = b.data.order ?? Number.MAX_SAFE_INTEGER;
+    return (
+      orderA - orderB ||
+      b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+    );
+  });
+}
