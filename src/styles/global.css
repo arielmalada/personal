@@ -594,6 +594,184 @@ pre code {
   font-size: 0.78rem;
 }
 
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  background: var(--color-line);
+  border: var(--hairline);
+  list-style: none;
+}
+
+.photo-card button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: var(--color-bg);
+  cursor: zoom-in;
+  text-align: left;
+}
+
+.photo-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--color-soft);
+  transition: filter 180ms ease;
+}
+
+.photo-card button:hover img {
+  filter: brightness(1.06);
+}
+
+.photo-card-meta {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.85rem 1rem 1rem;
+  border-top: var(--hairline);
+}
+
+.photo-card-title {
+  font-weight: 700;
+}
+
+.photo-card-meta .meta {
+  margin: 0;
+}
+
+/* Lightbox: full-viewport dialog on a dark scrim, independent of the site
+   theme so photographs always read against the same neutral dark. */
+.lightbox {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  border: 0;
+  background: transparent;
+  --lightbox-text: oklch(0.93 0.01 85);
+  --lightbox-muted: oklch(0.72 0.015 78);
+  --lightbox-line: oklch(1 0 0 / 22%);
+}
+
+.lightbox::backdrop {
+  background: oklch(0.15 0.012 65 / 94%);
+}
+
+.lightbox[open] {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.lightbox-frame {
+  display: grid;
+  min-width: 0;
+}
+
+.lightbox-slide {
+  display: grid;
+  grid-area: 1 / 1;
+  gap: 0.85rem;
+  justify-items: center;
+  margin: 0;
+}
+
+.lightbox-slide[hidden] {
+  display: none;
+}
+
+.lightbox-slide img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 76vh;
+  object-fit: contain;
+  border: 1px solid var(--lightbox-line);
+}
+
+.lightbox-slide figcaption {
+  display: grid;
+  gap: 0.25rem;
+  justify-items: center;
+  color: var(--lightbox-text);
+  text-align: center;
+}
+
+.lightbox-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+
+.lightbox-meta,
+.lightbox-description {
+  color: var(--lightbox-muted);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+}
+
+.lightbox-close,
+.lightbox-nav {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--lightbox-line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--lightbox-text);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.lightbox-close:hover,
+.lightbox-nav:hover {
+  border-color: var(--lightbox-text);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: clamp(0.75rem, 2vw, 1.5rem);
+  right: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+/* CSS-drawn icons, same approach as the theme toggle. */
+.lightbox-close span {
+  width: 0.95rem;
+  height: 0.95rem;
+  background:
+    linear-gradient(currentColor, currentColor) center / 100% 1px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 1px 100% no-repeat;
+  transform: rotate(45deg);
+}
+
+.lightbox-nav span {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-top: 1px solid currentColor;
+  border-left: 1px solid currentColor;
+}
+
+.lightbox-prev span {
+  transform: rotate(-45deg) translateX(2px);
+}
+
+.lightbox-next span {
+  transform: rotate(135deg) translateX(2px);
+}
+
 .article-head .entry-meta {
   margin-top: calc(var(--baseline) * 1.35);
 }
@@ -1052,6 +1230,19 @@ pre code {
 
   .note-row {
     grid-template-columns: 1fr;
+  }
+
+  .lightbox[open] {
+    gap: 0.5rem;
+  }
+
+  .lightbox-nav {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .lightbox-slide img {
+    max-height: 68vh;
   }
 
   .timeline article {

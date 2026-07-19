@@ -1,0 +1,177 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPhotos } from '../../lib/content';
+
+const photos = await getPhotos();
+
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat('en', {
+    year: 'numeric',
+    month: 'long',
+  }).format(date);
+---
+
+<BaseLayout
+  title="Photos"
+  description="Photographs by Ariel Malada — a small portfolio of personal photography."
+>
+  <section class="page-head section">
+    <p class="eyebrow">Photos</p>
+    <h1>Frames in between.</h1>
+    <p class="lead">
+      Photographs from walks, travels, and quiet in-between moments — a small
+      portfolio outside of work.
+    </p>
+  </section>
+
+  <section class="section" aria-label="Photo gallery">
+    {
+      photos.length > 0 ? (
+        <>
+          <ul class="photo-grid" role="list">
+            {photos.map((photo, index) => (
+              <li class="photo-card">
+                <button
+                  type="button"
+                  data-photo-index={index}
+                  aria-haspopup="dialog"
+                >
+                  <Image
+                    src={photo.data.image}
+                    alt={photo.data.alt}
+                    widths={[320, 480, 640, 960]}
+                    sizes="(min-width: 1160px) 24rem, (min-width: 760px) 33vw, 100vw"
+                    loading="lazy"
+                  />
+                  <span class="photo-card-meta">
+                    <span class="photo-card-title">{photo.data.title}</span>
+                    <span class="meta">
+                      {formatDate(photo.data.publishDate)}
+                    </span>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <dialog
+            class="lightbox"
+            data-lightbox
+            aria-label="Photo viewer"
+            data-pagefind-ignore
+          >
+            <button
+              class="lightbox-close"
+              type="button"
+              data-lightbox-close
+              aria-label="Close photo viewer"
+            >
+              <span aria-hidden="true" />
+            </button>
+            <button
+              class="lightbox-nav lightbox-prev"
+              type="button"
+              data-lightbox-prev
+              aria-label="Previous photo"
+            >
+              <span aria-hidden="true" />
+            </button>
+            <div class="lightbox-frame">
+              {photos.map((photo, index) => (
+                <figure class="lightbox-slide" data-slide hidden={index !== 0}>
+                  <Image
+                    src={photo.data.image}
+                    alt={photo.data.alt}
+                    widths={[960, 1400, 1920, 2400]}
+                    sizes="100vw"
+                    loading="lazy"
+                  />
+                  <figcaption>
+                    <span class="lightbox-title">{photo.data.title}</span>
+                    <span class="lightbox-meta">
+                      {formatDate(photo.data.publishDate)}
+                      {photo.data.location && ` · ${photo.data.location}`}
+                      {` · ${index + 1} / ${photos.length}`}
+                    </span>
+                    {photo.data.description && (
+                      <span class="lightbox-description">
+                        {photo.data.description}
+                      </span>
+                    )}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+            <button
+              class="lightbox-nav lightbox-next"
+              type="button"
+              data-lightbox-next
+              aria-label="Next photo"
+            >
+              <span aria-hidden="true" />
+            </button>
+          </dialog>
+        </>
+      ) : (
+        <div class="empty-state">
+          <p>Photographs are being prepared for publication.</p>
+        </div>
+      )
+    }
+  </section>
+
+  <script>
+    const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox]');
+
+    if (dialog) {
+      const slides = Array.from(
+        dialog.querySelectorAll<HTMLElement>('[data-slide]'),
+      );
+      const triggers =
+        document.querySelectorAll<HTMLButtonElement>('[data-photo-index]');
+      let current = 0;
+      let lastTrigger: HTMLButtonElement | null = null;
+
+      const show = (index: number) => {
+        current = (index + slides.length) % slides.length;
+        slides.forEach((slide, i) => {
+          slide.hidden = i !== current;
+        });
+      };
+
+      triggers.forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          lastTrigger = trigger;
+          show(Number(trigger.dataset.photoIndex));
+          dialog.showModal();
+          dialog.querySelector<HTMLElement>('[data-lightbox-close]')?.focus();
+        });
+      });
+
+      dialog
+        .querySelector('[data-lightbox-prev]')
+        ?.addEventListener('click', () => show(current - 1));
+      dialog
+        .querySelector('[data-lightbox-next]')
+        ?.addEventListener('click', () => show(current + 1));
+      dialog
+        .querySelector('[data-lightbox-close]')
+        ?.addEventListener('click', () => dialog.close());
+
+      // Click on the bare dialog backdrop (its padding box) closes the viewer;
+      // clicks on slides/controls bubble from their own targets and are ignored.
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+
+      dialog.addEventListener('close', () => lastTrigger?.focus());
+
+      document.addEventListener('keydown', (event) => {
+        if (!dialog.open) return;
+        if (event.key === 'ArrowLeft') show(current - 1);
+        if (event.key === 'ArrowRight') show(current + 1);
+      });
+    }
+  </script>
+</BaseLayout>
