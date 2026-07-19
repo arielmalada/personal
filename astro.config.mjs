@@ -10,11 +10,8 @@ export default defineConfig({
   integrations: [mdx(), sitemap()],
   markdown: {
     processor: unified({ remarkPlugins: [remarkReadingTime] }),
-    // Dual Shiki themes; `defaultColor: false` emits CSS variables
-    // (--shiki-light / --shiki-dark) so global.css can switch with the theme.
     shikiConfig: {
-      themes: { light: 'github-light', dark: 'github-dark' },
-      defaultColor: false,
+      theme: 'catppuccin-mocha',
       wrap: true,
     },
   },
