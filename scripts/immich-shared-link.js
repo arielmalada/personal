@@ -59,7 +59,9 @@ export function updateFrontmatter(content, thumbnailUrl) {
 
   const lineEnding = content.includes('\r\n') ? '\r\n' : '\n';
   const lines = match[2].split(lineEnding);
-  const heroImageIndex = lines.findIndex((line) => line.startsWith('heroImage:'));
+  const heroImageIndex = lines.findIndex((line) =>
+    line.startsWith('heroImage:'),
+  );
 
   if (heroImageIndex === -1) {
     lines.push('heroImage:', '  remote: true', `  src: ${thumbnailUrl}`);
@@ -185,7 +187,10 @@ async function main() {
   console.log(frontmatter);
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
   main().catch((error) => {
     console.error(`Error: ${error.message}`);
     process.exitCode = 1;
