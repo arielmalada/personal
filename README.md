@@ -55,8 +55,9 @@ Blog frontmatter:
 ---
 title: Post title
 description: A concise summary for listings and search.
-heroImage: ./post-hero.jpg
-heroImageRemote: false
+heroImage:
+  remote: false
+  src: ./post-hero.jpg
 publishDate: 2026-01-01
 updatedDate: 2026-01-02
 tags: ['astro', 'frontend']
@@ -65,7 +66,21 @@ draft: true
 ```
 
 Set `draft: false` when an entry is ready for the production build.
-Set `heroImageRemote: true` for externally hosted hero images; local images are optimized by Astro by default.
+Set `heroImage.remote: true` and provide an absolute URL for externally hosted images. Local images use `remote: false` and are optimized by Astro.
+
+### Immich shared images
+
+An Immich share page is not directly usable as an image source. Convert it to an accessible thumbnail URL with:
+
+```sh
+npm run immich:link -- "https://immich.example.com/share/<key>"
+```
+
+The command selects the first asset by default and prints the `heroImage` frontmatter fields. Use `--asset 2` to select another asset in a shared album. To update a blog post in place, add `--frontmatter`:
+
+```sh
+npm run immich:link -- "https://immich.example.com/share/<key>" --frontmatter "src/content/blog/my-post.md"
+```
 
 ## Container
 

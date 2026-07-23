@@ -13,6 +13,7 @@
     "check": "astro check",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "immich:link": "node scripts/immich-shared-link.js",
     "astro": "astro"
   },
   "dependencies": {

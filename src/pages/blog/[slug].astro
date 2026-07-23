@@ -66,9 +66,9 @@ const articleSchema = {
         entry.data.heroImage && (
           <ContentImage
             class="article-image"
-            src={entry.data.heroImage}
+            src={entry.data.heroImage.src}
             alt=""
-            remote={entry.data.heroImageRemote}
+            remote={entry.data.heroImage.remote}
             widths={[720, 1040, 1400]}
             sizes="(min-width: 900px) 72rem, 100vw"
             loading="lazy"
