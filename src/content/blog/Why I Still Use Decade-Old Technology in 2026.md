@@ -5,7 +5,7 @@ tags:
   - reflection
   - tech
 draft: false
-description: 'A journey revisiting vintage tech and reflecting on it'
+description: 'A personal reflection on why I still use decade-old technology, what keeps it useful, and whether the hobby has made me more intentional or simply more consumerist.'
 heroImage: https://immich.arielmalada.id/api/assets/aa5a173c-1441-4d4d-9efe-54bcf57164d0/thumbnail?size=preview&edited=true&key=wXvlxhSRmocgVRTkZsE0J1iXQqIIrwRoFzM-T9-ctHCYOs8dDCVMOPGy38Xyfmtfk4s
 ---
 
