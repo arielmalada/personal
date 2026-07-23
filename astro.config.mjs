@@ -8,6 +8,9 @@ import { remarkReadingTime } from './remark-reading-time.mjs';
 export default defineConfig({
   site: 'https://arielmalada.id',
   integrations: [mdx(), sitemap()],
+  image: {
+    domains: ['immich.arielmalada.id'],
+  },
   markdown: {
     processor: unified({ remarkPlugins: [remarkReadingTime] }),
     shikiConfig: {
