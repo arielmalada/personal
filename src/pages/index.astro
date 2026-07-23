@@ -127,9 +127,9 @@ const formatDate = (date: Date) =>
             <article class="note-row">
               {post.data.heroImage && (
                 <ContentImage
-                  src={post.data.heroImage}
+                  src={post.data.heroImage.src}
                   alt=""
-                  remote={post.data.heroImageRemote}
+                  remote={post.data.heroImage.remote}
                   width={320}
                   height={220}
                   loading="lazy"

@@ -31,8 +31,12 @@ const blog = defineCollection({
       tags: z.array(z.string()).default([]),
       description: z.string(),
       draft: z.boolean().default(false),
-      heroImage: image().optional(),
-      heroImageRemote: z.boolean().default(false),
+      heroImage: z
+        .discriminatedUnion('remote', [
+          z.object({ remote: z.literal(true), src: z.url() }),
+          z.object({ remote: z.literal(false), src: image() }),
+        ])
+        .optional(),
     }),
 });
 
