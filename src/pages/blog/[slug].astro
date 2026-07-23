@@ -1,6 +1,6 @@
 ---
 import { render } from 'astro:content';
-import { Image } from 'astro:assets';
+import ContentImage from '../../components/ContentImage.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../lib/url';
 import { getBlogPosts } from '../../lib/content';
@@ -64,12 +64,14 @@ const articleSchema = {
       </div>
       {
         entry.data.heroImage && (
-          <Image
+          <ContentImage
             class="article-image"
             src={entry.data.heroImage}
             alt=""
+            remote={entry.data.heroImageRemote}
             widths={[720, 1040, 1400]}
             sizes="(min-width: 900px) 72rem, 100vw"
+            loading="lazy"
           />
         )
       }

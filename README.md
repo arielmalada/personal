@@ -55,6 +55,8 @@ Blog frontmatter:
 ---
 title: Post title
 description: A concise summary for listings and search.
+heroImage: ./post-hero.jpg
+heroImageRemote: false
 publishDate: 2026-01-01
 updatedDate: 2026-01-02
 tags: ['astro', 'frontend']
@@ -63,6 +65,7 @@ draft: true
 ```
 
 Set `draft: false` when an entry is ready for the production build.
+Set `heroImageRemote: true` for externally hosted hero images; local images are optimized by Astro by default.
 
 ## Container
 
