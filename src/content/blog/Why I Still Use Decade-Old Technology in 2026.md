@@ -7,6 +7,7 @@ tags:
 draft: false
 description: 'A personal reflection on why I still use decade-old technology, what keeps it useful, and whether the hobby has made me more intentional or simply more consumerist.'
 heroImage: https://immich.arielmalada.id/api/assets/aa5a173c-1441-4d4d-9efe-54bcf57164d0/thumbnail?size=preview&edited=true&key=wXvlxhSRmocgVRTkZsE0J1iXQqIIrwRoFzM-T9-ctHCYOs8dDCVMOPGy38Xyfmtfk4s
+heroImageRemote: true
 ---
 
 I remember starting to like technology stuff when I was around five years old when I got my first phone. I think it was a Nokia 5110, handed down to me by my aunt sometime around 2003 or 2004. It is still one of my clearest childhood memories as I played around with the phone, tried to make something cool even though I didn't know much about it, and, of course, played Snake.
